@@ -10,10 +10,9 @@ const blankNote=()=>({name:'my_kz_binds',text:'',updated:''});
 const safeNote=x=>x&&typeof x==='object'?{name:String(x.name||'my_kz_binds').slice(0,60),text:String(x.text||'').slice(0,100000),updated:String(x.updated||'')}:blankNote();
 const state={game:saved.game==='cs2'?'cs2':'csgo',lang:saved.lang==='en'?'en':'fr',done:Array.isArray(saved.done)?saved.done.filter(id=>LESSONS.some(l=>l.id===id)):[],logs:Array.isArray(saved.logs)?saved.logs.filter(x=>x&&typeof x==='object'&&typeof x.id==='string').slice(0,100):[],routine:Array.isArray(saved.routine)?saved.routine.filter(x=>Number.isInteger(x)&&x>=0&&x<4):[],bindNotes:{csgo:safeNote(saved.bindNotes?.csgo),cs2:safeNote(saved.bindNotes?.cs2)}};
 let page='',svgId=0,seqIndex=0,seqTimer=null,toastTimer=null;
-// PayPal's email transfer flow; a direct Donate link is not configured for this account.
-// https://www.paypal.com/fr/cshelp/article/comment-envoyer-de-largent%C2%A0--help293
+// Public PayPal.Me profile supplied by the project owner.
 const DONATION_EMAIL='axelsalomon57@icloud.com';
-const PAYPAL_TRANSFER_URL='https://www.paypal.com/myaccount/transfer/';
+const PAYPAL_SUPPORT_URL='https://paypal.me/AxelSalomon760';
 const bindPrefs={layout:'qwerty',crouch:'c',wheel:'mwheeldown',extra:'mouse4',move:false,plugin:true};
 const t=(fr,en)=>state.lang==='en'?en:fr;
 const lessons=()=>state.lang==='en'?LESSONS_EN:LESSONS;
@@ -58,11 +57,11 @@ function donationPage(){return `<section class="donation-page" aria-labelledby="
     <section class="donation-panel" aria-labelledby="donation-panel-title">
       <div class="donation-panel-top"><span>PAYPAL / ${t('MONTANT LIBRE','CHOOSE YOUR AMOUNT')}</span><span aria-hidden="true">↗</span></div>
       <h2 id="donation-panel-title">${t('Un don libre.','Your choice of amount.')}</h2>
-      <p>${t('Copie cette adresse, puis colle-la dans « Envoyer et demander » sur PayPal.','Copy this address, then paste it into “Send & Request” on PayPal.')}</p>
+      <p>${t('Ouvre le lien PayPal et choisis le montant de ton soutien.','Open the PayPal link and choose how much to contribute.')}</p>
+      <a class="btn donation-paypal" href="${PAYPAL_SUPPORT_URL}" target="_blank" rel="noopener noreferrer" aria-describedby="donation-external">${t('Faire un don avec PayPal','Donate with PayPal')} <span aria-hidden="true">↗</span></a>
+      <p id="donation-external" class="donation-note">${t('PayPal s’ouvre dans un nouvel onglet. Vérifie le destinataire et le montant avant de confirmer.','PayPal opens in a new tab. Check the recipient and amount before confirming.')}</p>
       <div class="donation-recipient"><span>${t('ADRESSE PAYPAL','PAYPAL ADDRESS')}</span><code id="donation-email">${escapeHTML(DONATION_EMAIL)}</code></div>
-      <button class="btn donation-copy" data-action="copy-paypal">${t('Copier l’adresse','Copy address')} <span aria-hidden="true">↗</span></button>
-      <a class="btn secondary donation-paypal" href="${PAYPAL_TRANSFER_URL}" target="_blank" rel="noopener noreferrer" aria-describedby="donation-external">${t('Ouvrir PayPal','Open PayPal')} <span aria-hidden="true">↗</span></a>
-      <p id="donation-external" class="donation-note">${t('PayPal s’ouvre dans un nouvel onglet. Choisis ton montant et vérifie le destinataire avant de confirmer.','PayPal opens in a new tab. Choose your amount and check the recipient before confirming.')}</p>
+      <button class="btn secondary donation-copy" data-action="copy-paypal">${t('Copier l’adresse','Copy address')} <span aria-hidden="true">↗</span></button>
       <p class="donation-note donation-online">${t('Une connexion Internet et un compte PayPal sont nécessaires.','An Internet connection and a PayPal account are required.')}</p>
     </section>
   </div>
